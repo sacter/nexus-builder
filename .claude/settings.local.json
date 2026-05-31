@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(pnpm --version)",
+      "Bash(kubectl version *)",
+      "Bash(pnpm dev:frontend *)",
+      "Bash(npm install *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm approve-builds *)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(curl -s http://localhost:5173/src/main.ts)",
+      "Bash(curl -s http://localhost:5173/src/router/index.ts)",
+      "Bash(curl -s http://localhost:5173/src/App.vue)",
+      "Bash(curl -s http://localhost:5173/src/views/login/LoginView.vue)",
+      "Bash(pnpm *)",
+      "Bash(curl -s http://localhost:5173/src/components/registry/index.ts)"
+    ]
+  }
+}

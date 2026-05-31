@@ -1,0 +1,22 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+coverage/
+.nyc_output/
+uploads/
+.turbo/
+.vite/
+
+# ========== 环境变量（含数据库密码、JWT密钥、OAuth密钥等敏感信息） ==========
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
+packages/backend/.env
+packages/renderer/.env
+
+# ========== 部署配置（含密码/密钥等敏感信息） ==========
+deploy/k8s/secret.yaml
+docker-compose.yml

@@ -1,0 +1,51 @@
+# ===================================================
+# K8s Ingress: 三层路由隔离
+#   /api/*      → Backend    (设计态API，需认证)
+#   /app/*      → Renderer   (运行态页面，无需认证)
+#   /*          → Frontend   (设计器SPA，需认证)
+# ===================================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lowcode-ingress
+  namespace: lowcode
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: lowcode.example.com
+      http:
+        paths:
+          # 设计态 API → Backend
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: lowcode-backend-svc
+                port:
+                  number: 3000
+          # 文件上传 → Backend
+          - path: /uploads
+            pathType: Prefix
+            backend:
+              service:
+                name: lowcode-backend-svc
+                port:
+                  number: 3000
+          # 运行态页面 → Renderer (高优先级)
+          - path: /app
+            pathType: Prefix
+            backend:
+              service:
+                name: lowcode-renderer-svc
+                port:
+                  number: 3001
+          # 设计器 SPA → Frontend (兜底路由)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lowcode-frontend-svc
+                port:
+                  number: 80

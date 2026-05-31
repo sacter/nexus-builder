@@ -1,0 +1,51 @@
+# ===================================================
+# Renderer Deployment: 运行态页面渲染
+# 特点: 只读数据库、无状态、可水平扩展
+# ===================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lowcode-renderer
+  namespace: lowcode
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lowcode-renderer
+  template:
+    metadata:
+      labels:
+        app: lowcode-renderer
+    spec:
+      containers:
+        - name: renderer
+          image: registry.example.com/lowcode-renderer:latest
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: lowcode-config
+            - secretRef:
+                name: lowcode-secret
+          env:
+            - name: RENDERER_PORT
+              value: "3001"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 5

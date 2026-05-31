@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lowcode-renderer-svc
+  namespace: lowcode
+spec:
+  selector:
+    app: lowcode-renderer
+  ports:
+    - port: 3001
+      targetPort: 3001
+  type: ClusterIP
